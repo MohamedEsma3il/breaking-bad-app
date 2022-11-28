@@ -1,3 +1,4 @@
+import 'package:breaking_bad/constants/strings.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
@@ -18,35 +19,44 @@ class CharacterItem extends StatelessWidget {
         color: MyColors.myWhite,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: GridTile(
-        child: Container(
-          color: MyColors.myGrey,
-          child: character.image.isNotEmpty
-              ? FadeInImage.assetNetwork(
-                  width: double.infinity,
-                  height: double.infinity,
-                  placeholder: 'assets/images/loading.gif',
-                  image: character.image,
-                  fit: BoxFit.cover,
-                )
-              : Image.asset('assets/images/img_not_found.jpg'),
-        ),
-        footer: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          color: Colors.black54,
-          alignment: Alignment.bottomCenter,
-          child: Text(
-            '${character.name}',
-            style: const TextStyle(
-              height: 1.3,
-              fontSize: 16,
-              color: MyColors.myWhite,
-              fontWeight: FontWeight.bold,
+      child: InkWell(
+        onTap: () => Navigator.pushNamed(context, characterDetailsScreen,
+            arguments: character),
+        child: GridTile(
+          footer: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            color: Colors.black54,
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              character.name,
+              style: const TextStyle(
+                height: 1.3,
+                fontSize: 16,
+                color: MyColors.myWhite,
+                fontWeight: FontWeight.bold,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              textAlign: TextAlign.center,
             ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            textAlign: TextAlign.center,
+          ),
+          child: Hero(
+            tag: character.charId,
+            child: Container(
+              color: MyColors.myGrey,
+              child: FadeInImage(
+                width: double.infinity,
+                height: double.infinity,
+                fit: BoxFit.cover,
+                image: NetworkImage(character.image),
+                placeholder: const AssetImage('assets/images/loading.gif'),
+                imageErrorBuilder: (context, error, stackTrace) {
+                  return Image.asset('assets/images/img_not_found.jpg',
+                      fit: BoxFit.cover);
+                },
+              ),
+            ),
           ),
         ),
       ),
