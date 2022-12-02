@@ -1,6 +1,7 @@
 import 'package:breaking_bad/business_logic/cubit/characters_cubit.dart';
 import 'package:breaking_bad/constants/colors.dart';
 import 'package:breaking_bad/presentation/widgets/characterItem.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,6 +23,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
   @override
   void initState() {
     super.initState();
+    checkConnectitivy();
     BlocProvider.of<CharactersCubit>(context).getAllCharacters();
   }
 
@@ -166,8 +168,36 @@ class _CharactersScreenState extends State<CharactersScreen> {
     );
   }
 
+  Widget buildNoInternetWidget() {
+    return Center(
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              'Can\'t connect .. check internet',
+              style: TextStyle(
+                fontSize: 22,
+                color: MyColors.myGrey,
+              ),
+            ),
+            Image.asset('assets/images/no_internet.png')
+          ],
+        ),
+      ),
+    );
+  }
+
+  void checkConnectitivy() async {
+    var result = await Connectivity().checkConnectivity();
+  }
+
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColors.myYellow,
@@ -179,7 +209,13 @@ class _CharactersScreenState extends State<CharactersScreen> {
         title: _isSearching ? _buildSearchField() : _buildAppBarTitle(),
         actions: _buildAppBarActions(),
       ),
-      body: buildBlocWidget(),
+      body: StreamBuilder<ConnectivityResult>(
+          stream: Connectivity().onConnectivityChanged,
+          builder: (context, snapshot) {
+            return snapshot.data == ConnectivityResult.none
+                ? buildNoInternetWidget()
+                : buildBlocWidget();
+          }),
     );
   }
 }
