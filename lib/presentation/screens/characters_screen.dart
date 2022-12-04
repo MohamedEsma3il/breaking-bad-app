@@ -4,6 +4,7 @@ import 'package:breaking_bad/presentation/widgets/characterItem.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../data/models/character.dart';
 
@@ -31,17 +32,17 @@ class _CharactersScreenState extends State<CharactersScreen> {
     return TextField(
       controller: _searchTextController,
       cursorColor: MyColors.myGrey,
-      decoration: const InputDecoration(
+      decoration:  InputDecoration(
         hintText: 'Find a character...',
         border: InputBorder.none,
         hintStyle: TextStyle(
           color: MyColors.myGrey,
-          fontSize: 18,
+          fontSize: 18.sp,
         ),
       ),
-      style: const TextStyle(
+      style:  TextStyle(
         color: MyColors.myGrey,
-        fontSize: 18,
+        fontSize: 18.sp,
       ),
       onChanged: (searchedCharacter) {
         addSearchedForItemToSearchedList(searchedCharacter);
@@ -175,13 +176,13 @@ class _CharactersScreenState extends State<CharactersScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height:MediaQuery.of(context).size.height/18,
             ),
-            const Text(
+             Text(
               'Can\'t connect .. check internet',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 22.sp,
                 color: MyColors.myGrey,
               ),
             ),

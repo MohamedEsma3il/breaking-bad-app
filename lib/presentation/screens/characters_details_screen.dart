@@ -5,6 +5,7 @@ import 'package:breaking_bad/business_logic/cubit/characters_cubit.dart';
 import 'package:breaking_bad/data/models/character.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants/colors.dart';
 
@@ -15,7 +16,7 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget buildSliverAppBar() {
     return SliverAppBar(
-      expandedHeight: 600,
+      expandedHeight: 500.h,
       pinned: true,
       stretch: true,
       backgroundColor: MyColors.myGrey,
@@ -27,59 +28,57 @@ class CharacterDetailsScreen extends StatelessWidget {
         ),
         background: Hero(
           tag: character.charId,
-          child:  FadeInImage(
-            //width: double.infinity,
-            //height: double.infinity,
+          child: FadeInImage(
             fit: BoxFit.cover,
             image: NetworkImage(character.image),
             placeholder: const AssetImage('assets/images/loading.gif'),
             imageErrorBuilder: (context, error, stackTrace) {
-              return Image.asset('assets/images/img_not_found.jpg',
-                  fit: BoxFit.cover,
+              return Image.asset(
+                'assets/images/img_not_found.jpg',
+                fit: BoxFit.cover,
               );
             },
           ),
-          // child: Image.network(
-          //   character.image,
-          //   fit: BoxFit.cover,
-          // ),
         ),
       ),
     );
   }
 
   Widget characterInfo(String title, String value) {
-    return RichText(
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-      text: TextSpan(
-        children: [
-          TextSpan(
-            text: title,
-            style: const TextStyle(
-              color: MyColors.myWhite,
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
+    return Container(
+      margin: EdgeInsets.only(bottom: 20.w),
+      child: RichText(
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: title,
+              style: TextStyle(
+                shadows: const [
+                  Shadow(color: MyColors.myWhite, offset: Offset(0, -4))
+                ],
+                decoration: TextDecoration.underline,
+                decorationColor: MyColors.myYellow,
+                decorationThickness: 4,
+                color: Colors.transparent,
+                fontWeight: FontWeight.bold,
+                fontSize: 18.sp,
+              ),
             ),
-          ),
-          TextSpan(
-            text: value,
-            style: const TextStyle(
-              color: MyColors.myWhite,
-              fontSize: 16,
+            TextSpan(
+              text: value,
+              style: TextStyle(
+                shadows: const [
+                  Shadow(color: MyColors.myWhite, offset: Offset(0, -4))
+                ],
+                color: Colors.transparent,
+                fontSize: 16.sp,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget buildDivider(double endIndent) {
-    return Divider(
-      height: 30,
-      endIndent: endIndent,
-      color: MyColors.myYellow,
-      thickness: 2,
     );
   }
 
@@ -93,15 +92,15 @@ class CharacterDetailsScreen extends StatelessWidget {
 
   Widget displayRandomQuoteOrEmptySpace(state) {
     var quotes = (state).quotes;
-    if (quotes.isNotEmpty/*length != 0*/) {
+    if (quotes.isNotEmpty /*length != 0*/) {
       int randomQuoteIndex = Random().nextInt(quotes.length - 1);
       return Center(
         child: DefaultTextStyle(
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 20,
+          style: TextStyle(
+            fontSize: 20.sp,
             color: MyColors.myWhite,
-            shadows: [
+            shadows: const [
               Shadow(
                 blurRadius: 7,
                 color: MyColors.myYellow,
@@ -143,33 +142,28 @@ class CharacterDetailsScreen extends StatelessWidget {
             delegate: SliverChildListDelegate(
               [
                 Container(
-                  margin: const EdgeInsets.fromLTRB(14, 14, 14, 0),
-                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.fromLTRB(14, 14, 14, 0).w,
+                  padding: const EdgeInsets.all(8).w,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 40,
+                      ),
                       characterInfo('Job : ', character.jobs.join(' / ')),
-                      buildDivider(285),
                       characterInfo(
                           'Appeared in : ', character.categoryForTwoSeries),
-                      buildDivider(220),
                       characterInfo('Seasons : ',
                           character.appearanceOfSeasons.join(' / ')),
-                      buildDivider(245),
                       characterInfo('Status : ', character.statusIfDeadOrAlive),
-                      buildDivider(260),
                       character.betterCallSaulAppearance.isEmpty
                           ? Container()
                           : characterInfo('Better Call Saul Seasons : ',
                               character.betterCallSaulAppearance.join(" / ")),
-                      character.betterCallSaulAppearance.isEmpty
-                          ? Container()
-                          : buildDivider(150),
                       characterInfo('Actor/Actress : ', character.actorName),
-                      buildDivider(205),
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 40,
                       ),
                       BlocBuilder<CharactersCubit, CharactersState>(
                         builder: (context, state) {
@@ -179,8 +173,8 @@ class CharacterDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 500,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.95,
                 )
               ],
             ),

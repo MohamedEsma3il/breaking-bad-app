@@ -1,5 +1,6 @@
 import 'package:breaking_bad/constants/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants/colors.dart';
 import '../../data/models/character.dart';
@@ -13,11 +14,11 @@ class CharacterItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-      padding: const EdgeInsetsDirectional.all(4),
+      margin:  EdgeInsetsDirectional.all(8.w),
+      padding:  EdgeInsetsDirectional.all(4.w) ,
       decoration: BoxDecoration(
         color: MyColors.myWhite,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8).w,
       ),
       child: InkWell(
         onTap: () => Navigator.pushNamed(context, characterDetailsScreen,
@@ -25,14 +26,14 @@ class CharacterItem extends StatelessWidget {
         child: GridTile(
           footer: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding:  EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
             color: Colors.black54,
             alignment: Alignment.bottomCenter,
             child: Text(
               character.name,
-              style: const TextStyle(
-                height: 1.3,
-                fontSize: 16,
+              style:  TextStyle(
+                height: 1.4.h,
+                fontSize: 16.sp,
                 color: MyColors.myWhite,
                 fontWeight: FontWeight.bold,
               ),
